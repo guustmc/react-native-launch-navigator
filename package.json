@@ -1,5 +1,5 @@
 {
-  "name": "react-native-launch-navigator",
+  "name": "react-native-launch-navigator-tmc",
   "version": "1.0.8",
   "description": "A React Native module for launching today's most popular navigation/ride apps to navigate to a destination.",
   "main": "index.js",
