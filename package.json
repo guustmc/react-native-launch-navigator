@@ -1,15 +1,15 @@
 {
   "name": "react-native-launch-navigator",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A React Native module for launching today's most popular navigation/ride apps to navigate to a destination.",
   "main": "index.js",
   "types": "./index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dpa99c/react-native-launch-navigator.git"
+    "url": "git+https://github.com/guustmc/react-native-launch-navigator.git"
   },
-  "homepage": "https://github.com/dpa99c/react-native-launch-navigator",
-  "issue": "https://github.com/dpa99c/react-native-launch-navigator/issues",
+  "homepage": "https://github.com/guustmc/react-native-launch-navigator",
+  "issue": "https://github.com/guustmc/react-native-launch-navigator/issues",
   "author": "Dave Alden",
   "license": "MIT",
   "keywords": [

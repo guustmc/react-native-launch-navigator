@@ -64,57 +64,63 @@ RCT_EXPORT_METHOD(isAppAvailable:(NSString*) app
                   resolve:(RCTPromiseResolveBlock) resolve
                   reject:(RCTPromiseRejectBlock) reject)
 {
-  @try {
-    BOOL result = [self.launchNavigator isAppAvailable:app];
-    resolve([NSNumber numberWithBool:result]);
-  }
-  @catch (NSException* exception) {
-    [logger error: exception.reason];
-    reject(ERROR_CODE_EXCEPTION, exception.reason, [self exceptionToError:exception]);
-  }
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    @try {
+      BOOL result = [self.launchNavigator isAppAvailable:app];
+      resolve([NSNumber numberWithBool:result]);
+    }
+    @catch (NSException* exception) {
+      [logger error: exception.reason];
+      reject(ERROR_CODE_EXCEPTION, exception.reason, [self exceptionToError:exception]);
+    }
+  });
 }
 
 RCT_EXPORT_METHOD(getAvailableApps:(RCTPromiseResolveBlock) resolve
                   reject:(RCTPromiseRejectBlock) reject)
 {
-  @try {
-    NSDictionary* results = [launchNavigator availableApps];
-    resolve(results);
-  }
-  @catch (NSException* exception) {
-    [logger error: exception.reason];
-    reject(ERROR_CODE_EXCEPTION, exception.reason, [self exceptionToError:exception]);
-  }
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    @try {
+      NSDictionary* results = [launchNavigator availableApps];
+      resolve(results);
+    }
+    @catch (NSException* exception) {
+      [logger error: exception.reason];
+      reject(ERROR_CODE_EXCEPTION, exception.reason, [self exceptionToError:exception]);
+    }
+  });
 }
 
 RCT_EXPORT_METHOD(navigate:(NSDictionary*) params
                   resolve:(RCTPromiseResolveBlock) resolve
                   reject:(RCTPromiseRejectBlock) reject)
 {
-  @try {
-    NSString* logMsg = @"Called navigate() with args: ";
-    for(id object in params){
-      NSString* key = object;
-      NSString* value = [params objectForKey:key];
-      logMsg = [NSString stringWithFormat:@"%@ %@=%@;", logMsg, key, value];
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    @try {
+      NSString* logMsg = @"Called navigate() with args: ";
+      for(id object in params){
+        NSString* key = object;
+        NSString* value = [params objectForKey:key];
+        logMsg = [NSString stringWithFormat:@"%@ %@=%@;", logMsg, key, value];
+      }
+      [logger debug:logMsg];
+      
+      [launchNavigator navigate:params
+        success:^(void) {
+          resolve(nil);
+        }
+        fail:^(NSString* errorMsg) {
+          reject(ERROR_CODE_ERROR, errorMsg, nil);
+        }
+      ];
+      
+      
     }
-    [logger debug:logMsg];
-    
-    [launchNavigator navigate:params
-      success:^(void) {
-        resolve(nil);
-      }
-      fail:^(NSString* errorMsg) {
-        reject(ERROR_CODE_ERROR, errorMsg, nil);
-      }
-     ];
-    
-    
-  }
-  @catch (NSException* exception) {
-    [logger error: exception.reason];
-    reject(ERROR_CODE_EXCEPTION, exception.reason, [self exceptionToError:exception]);
-  }
+    @catch (NSException* exception) {
+      [logger error: exception.reason];
+      reject(ERROR_CODE_EXCEPTION, exception.reason, [self exceptionToError:exception]);
+    }
+  });
 }
 
 
